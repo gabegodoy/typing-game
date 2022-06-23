@@ -67,11 +67,11 @@ window.addEventListener('keydown', (element) => {
   const selectecLetter = selectedWord[letterCounter]
 
   
-  if (timeOnScreen.textContent != 0){
+  if (timeOnScreen.textContent > 0){
 
   
     if (input == selectecLetter){
-      wordOnScreen.childNodes[letterCounter].style.color = 'green';
+      wordOnScreen.childNodes[letterCounter].style.color = '#136115';
       letterCounter++
       
       if (letterCounter == selectedWord.length){
@@ -80,7 +80,7 @@ window.addEventListener('keydown', (element) => {
         stringToArray()
         letterCounter = 0
         points++
-        pointsOnScreen.innerHTML = 'Your Points: ' + points
+        pointsOnScreen.innerHTML = 'Points: ' + points
       }
 
     } 
@@ -108,23 +108,31 @@ function timer () {
   /*   OUT OF TIME */
   if (seconds <= -1){
     clearInterval(timerInterval)
-    startButton.disabled = false;
+    
+    startButton.style.display = 'block';
+    timeOnScreen.style.display = 'none';
+    wordOnScreen.innerHTML = "Time's Up..."
+    pointsOnScreen.style.display = 'none';
+    
     seconds = 60;
-    timeOnScreen.innerHTML = 0
+
   } 
 }
 
 function startTimer (){
   timerInterval = setInterval(timer,1000) 
-  startButton.disabled = true;
+  startButton.style.display = 'none';
   
   clearScreen();
-
+  
   wordSelector = generateWord ()
   stringToArray()
   
+
   points = 0;
-  pointsOnScreen.innerHTML = 'Your Points: ' + points
+  pointsOnScreen.style.display = 'block'
+  pointsOnScreen.innerHTML = 'Points: ' + points
+  timeOnScreen.style.display = 'block';
   letterCounter = 0;
   
 }
