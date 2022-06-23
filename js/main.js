@@ -5,6 +5,13 @@ let letterCounter = 0;
 let seconds = 60;
 let points = 0;
 
+/* HTML ELEMENTS */
+const wordOnScreen = document.querySelector('.word');
+const pointsOnScreen = document.querySelector('.points')
+const timeOnScreen = document.querySelector('.time');
+timeOnScreen.innerHTML = 'Are you fast?'
+const startButton = document.querySelector('.start__button');
+const timeWarning = document.querySelector('.time__warning');
 
 /* DRAW */
 function getRandomArbitrary(min, max) {
@@ -15,17 +22,6 @@ let wordSelector = generateWord ();
 function generateWord(){
   return portugueseWords[getRandomArbitrary(1,portugueseWords.length)];
 }
-
-
-/* HTML ELEMENTS */
-const wordOnScreen = document.querySelector('.word');
-const pointsOnScreen = document.querySelector('.points')
-const timeOnScreen = document.querySelector('.time');
-timeOnScreen.innerHTML = 'Hello World!'
-const startButton = document.querySelector('.start__button');
-
-
-
 
 /* TRANSFORM STRING INTO ARRAY */
 function stringToArray (){
@@ -48,7 +44,19 @@ function clearScreen (){
   return wordOnScreen.innerHTML = '' 
 }
 
-
+/* TOGGLE TIME WARNING ON/OFF */
+let warningInterval;
+function toggleWarning (){
+  addWarning()
+  warningInterval = setInterval(removeWarning, 1000)
+}
+function addWarning(){
+  timeWarning.classList.add('time__warning--active')
+}
+function removeWarning (){
+  timeWarning.classList.remove('time__warning--active')
+  clearInterval(warningInterval)
+}
 
 
 
@@ -68,7 +76,6 @@ window.addEventListener('keydown', (element) => {
       
       if (letterCounter == selectedWord.length){
         clearScreen(); 
-        /* Unite the both */
         wordSelector = generateWord()
         stringToArray()
         letterCounter = 0
@@ -86,20 +93,21 @@ window.addEventListener('keydown', (element) => {
 
     else if (selectedWord.length != 0) {
       seconds-=5;
+      toggleWarning()
       console.log('Incorrect Letter | -3 Seconds')
     }
 }
 })
 
 
-let myInterval;
 
+let timerInterval;
 function timer () {
   timeOnScreen.innerHTML = seconds--;
 
-/*   OUT OF TIME */
+  /*   OUT OF TIME */
   if (seconds <= -1){
-    clearInterval(myInterval)
+    clearInterval(timerInterval)
     startButton.disabled = false;
     seconds = 60;
     timeOnScreen.innerHTML = 0
@@ -107,15 +115,16 @@ function timer () {
 }
 
 function startTimer (){
-  myInterval = setInterval(timer,1000) 
+  timerInterval = setInterval(timer,1000) 
   startButton.disabled = true;
   
   clearScreen();
-  
+
   wordSelector = generateWord ()
   stringToArray()
   
   points = 0;
+  pointsOnScreen.innerHTML = 'Your Points: ' + points
   letterCounter = 0;
   
 }
