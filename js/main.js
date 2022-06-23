@@ -1,19 +1,31 @@
 const portugueseWords = ['IDEIA', 'SUTIL', 'VIGOR', 'PODER', 'AMIGO', 'MAMAE', 'SAGAZ', 'NOBRE', 'AFETO', 'FAZER', 'CARNE', 'PODER', 'MORAL', 'MUITO', 'HONRA', 'JUSTO', 'ETNIA', 'SONHO', 'ICONE', 'RAZAO', 'SONHO', 'CASAL', 'TEMPO', 'DENGO', 'GENRO', 'CULTO', 'TEMOR', 'VICIO', 'FORTE', 'REGRA', 'LOUCO', 'SAUDE', 'BANAL', 'FELIZ', 'ONTEM', 'HOMEM', 'MEIGA', 'HEROI', 'ABRIR', 'FALSO', 'BRAVO', 'GENIO']
+
 let selectedWord = [];  
-let counter = 0;
+let letterCounter = 0;
 let seconds = 60;
 let points = 0;
 
+
+/* DRAW */
 function getRandomArbitrary(min, max) {
   return parseInt(Math.random() * (max - min) + min);
 }
-
+/* DRAW WORD */
 let wordSelector = generateWord ();
 function generateWord(){
   return portugueseWords[getRandomArbitrary(1,portugueseWords.length)];
 }
 
+
+/* HTML ELEMENTS */
 const wordOnScreen = document.querySelector('.word');
+const pointsOnScreen = document.querySelector('.points')
+const timeOnScreen = document.querySelector('.time');
+timeOnScreen.innerHTML = 'Hello World!'
+const startButton = document.querySelector('.start__button');
+
+
+
 
 /* TRANSFORM STRING INTO ARRAY */
 function stringToArray (){
@@ -29,64 +41,56 @@ function stringToArray (){
 
   }
 
-  console.log(selectedWord)
+}
+
+/* ERASE THE WORD */
+function clearScreen (){
+  return wordOnScreen.innerHTML = '' 
 }
 
 
 
 
 
-let pointsOnScreen = document.querySelector('.points')
-
-
-
 /* VERIFY PRESSED LETTER */
 window.addEventListener('keydown', (element) => {
 
-  startTimer()
+  const input = element.key.toLowerCase()
+  const selectecLetter = selectedWord[letterCounter]
 
-  let lowerInput = element.key.toLowerCase()
   
-  if (lowerInput == selectedWord[counter]){
-    console.log('Correct Letter')
-    wordOnScreen.childNodes[counter].style.color = 'green'
-    counter++
+  if (timeOnScreen.textContent != 0){
+
+  
+    if (input == selectecLetter){
+      wordOnScreen.childNodes[letterCounter].style.color = 'green';
+      letterCounter++
+      
+      if (letterCounter == selectedWord.length){
+        clearScreen(); 
+        /* Unite the both */
+        wordSelector = generateWord()
+        stringToArray()
+        letterCounter = 0
+        points++
+        pointsOnScreen.innerHTML = 'Your Points: ' + points
+      }
+
+    } 
     
-    
-    if (counter == selectedWord.length){
-      wordOnScreen.innerHTML = '' 
+    else if (letterCounter == selectedWord.length  && selectedWord.length != 0 ){
       wordSelector = generateWord()
       stringToArray()
-      counter = 0
-      points++
-      pointsOnScreen.innerHTML = 'Your Points: ' + points
+      letterCounter = 0
     }
 
-  } 
-  
-  else if (counter == selectedWord.length){
-    wordSelector = generateWord()
-    stringToArray()
-    counter = 0
-  }
-
-  else {
-    seconds-=5;
-    console.log('Incorrect Letter | -3 Seconds')}
-
-  console.log(counter)
-
+    else if (selectedWord.length != 0) {
+      seconds-=5;
+      console.log('Incorrect Letter | -3 Seconds')
+    }
+}
 })
 
-
-
-
-
-
-
-let timeOnScreen = document.querySelector('.time');
-timeOnScreen.innerHTML = 'Hello World!'
-let startButton = document.querySelector('.start__button');
 
 let myInterval;
 
@@ -100,9 +104,6 @@ function timer () {
     seconds = 60;
     timeOnScreen.innerHTML = 0
   } 
- 
-
-
 }
 
 function startTimer (){

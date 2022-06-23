@@ -31,23 +31,6 @@ main{
   text-align: center;
 }
 
-.time__warning{
-  color: red;
-  font-size: 3rem;
-  font-weight: 900;
-  transition: 2s;
-  /* margin: -7rem 0 0 5rem; */
-}
-
-.time__warning--active{
-  position: absolute;
-  margin-top: 6rem;
-  margin-left: 10rem;
-  opacity: 0;
-  z-index: 5;
-}
-
-
 .start__button{
   font-size: 3rem;
   padding: .3rem 1rem;
