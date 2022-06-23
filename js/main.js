@@ -107,7 +107,15 @@ function timer () {
 }
 
 function startTimer (){
-  stringToArray()
-  startButton.disabled = true;
   myInterval = setInterval(timer,1000) 
+  startButton.disabled = true;
+  
+  clearScreen();
+  
+  wordSelector = generateWord ()
+  stringToArray()
+  
+  points = 0;
+  letterCounter = 0;
+  
 }
