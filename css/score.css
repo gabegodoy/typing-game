@@ -1,0 +1,61 @@
+.score__background{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0,0.7);
+  backdrop-filter: blur(2pxpx);
+
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.score__container{
+  position: absolute;
+
+  width: 60vw;
+  height: 80vh;
+  background: #3c1361;
+
+}
+
+.score__title{
+  margin-top: 8%;
+  margin-bottom: 6%;
+
+  color: red;
+  font-size: 3rem;
+  text-transform: uppercase;
+}
+
+.score__info{
+  display: flex;
+  justify-content: space-around;
+  font-size: 2rem;
+
+  color: yellow;
+}
+
+.list__position li{
+  color: #136115;
+  margin-top: 2rem;
+  list-style-type: decimal;
+}
+
+.list__score li{
+  color: whitesmoke;
+  margin-top: 2rem;
+}
+
+.list__date li{
+  color: yellow;
+  margin-top: 2rem;
+}
+
+.try-again__button{
+  position: absolute;
+  bottom: 5%;
+}
