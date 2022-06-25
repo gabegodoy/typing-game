@@ -23,6 +23,9 @@ const scoreTable = document.querySelector('.score__background');
 const listPosition = document.querySelector('.list__position');
 const listScore = document.querySelector('.list__score');
 const listDate = document.querySelector('.list__date');
+const ticTacSound = document.querySelector('#tic-tac__sound');
+const alarmSound = document.querySelector('#alarm__sound');
+
 
 
 const itens = JSON.parse(localStorage.getItem("itens")) || [];
@@ -230,6 +233,12 @@ function timer () {
 
     clearInterval(timerInterval)
     seconds = 0;
+    
+    ticTacSound.pause();
+
+    
+    playSound(alarmSound);
+    
     finishGameHtml();
     verifyScore(); 
 
@@ -246,7 +255,8 @@ function startTimer (){
   startGameHtml();
   
   timerInterval = setInterval(timer,1000) 
-  
+  playSound(ticTacSound);
+
   wordSelector = generateWord ()
   stringToArray()
 }
@@ -287,23 +297,19 @@ function clearScore(){
 }
 
 
-itens.forEach((elemento) => {
-  setScore(elemento)
-});
+/* AUDIO SETTINGS */
+function playSound(sound){
+  sound.play()
+}
 
 
 
 
 
 /* LOCAL STORAGE */
-
-/* 
-function removeLocal (id){
-  let newArray = itens.filter((item) => item.id != id);
-  localStorage.setItem("itens", JSON.stringify(newArray))
-}
-*/
-
+itens.forEach((elemento) => {
+setScore(elemento)
+});
 
 function atualizaLocal (){
   localStorage.setItem("itens", JSON.stringify(itens));
