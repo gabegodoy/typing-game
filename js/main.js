@@ -122,7 +122,7 @@ window.addEventListener('keydown', (element) => {
     
     else if (selectedWord.length != 0) {
       seconds-=5;
-      toggleWarning()
+      toggleWarning();
     }
   }
 })
