@@ -24,15 +24,14 @@ const listPosition = document.querySelector('.list__position');
 const listScore = document.querySelector('.list__score');
 const listDate = document.querySelector('.list__date');
 
-let listPositionItems = document.querySelectorAll('.positionItem');
-let listScoreItems = document.querySelectorAll('.scoreItem');
-let listDateItems = document.querySelectorAll('.dateItem');
+
+const itens = JSON.parse(localStorage.getItem("itens")) || [];
+
+
 
 let newPosition = document.createElement('li');
 let newScore = document.createElement('li');
 let newDate = document.createElement('li');
-
-
 
 let selectedWord = [];  
 let letterCounter = 0;
@@ -41,9 +40,33 @@ let points = 0;
 let timerInterval;
 
 
+/* -------------------------------------------------------- */
 timeOnScreen.innerHTML = 'Are you fast?'
 
-/* DRAW */
+
+/* HTML MECHANISM */
+function startGameHtml(){
+  startButton.style.display = 'none';
+  scoreTable.style.display = 'none'
+  startButton.classList.remove('start__button--score')
+  pointsOnScreen.style.display = 'block'
+  pointsOnScreen.innerHTML = 'Points: ' + points
+  timeOnScreen.style.display = 'block';
+  timeOnScreen.innerHTML = seconds;
+}
+
+function finishGameHtml (){
+  startButton.style.display = 'block';
+  timeOnScreen.style.display = 'none';
+  wordOnScreen.innerHTML = "Time's Up..."
+  pointsOnScreen.style.display = 'none';
+  scoreTable.style.display = 'flex';
+  startButton.classList.add('start__button--score');
+  timeOnScreen.innerHTML = seconds;
+}
+
+
+/* DRAW NUMBER */
 function getRandomArbitrary(min, max) {
   return parseInt(Math.random() * (max - min) + min);
 }
@@ -67,9 +90,7 @@ function stringToArray (){
     wordOnScreen.appendChild(newLetter);
     
     selectedWord.push(wordSelector[i].toLowerCase())
-    
   }
-  
 }
 
 
@@ -99,11 +120,9 @@ window.addEventListener('keydown', (element) => {
   
   const input = element.key.toLowerCase()
   const selectecLetter = selectedWord[letterCounter]
-  
-  
+    
   if (timeOnScreen.textContent > 0){
-    
-    
+      
     if (input == selectecLetter){
       wordOnScreen.childNodes[letterCounter].style.color = '#136115';
       letterCounter++
@@ -116,7 +135,6 @@ window.addEventListener('keydown', (element) => {
         points++
         pointsOnScreen.innerHTML = 'Points: ' + points
       }
-      
     } 
     
     else if (letterCounter == selectedWord.length  && selectedWord.length != 0 ){
@@ -133,37 +151,9 @@ window.addEventListener('keydown', (element) => {
 })
 
 
-
-
-
-
 /* PUNCTUATION SYSTEM  */
-let pointsTable = []
 let newPoint;
-
-function startGameHtml(){
-  startButton.style.display = 'none';
-  scoreTable.style.display = 'none'
-  startButton.classList.remove('start__button--score')
-  pointsOnScreen.style.display = 'block'
-  pointsOnScreen.innerHTML = 'Points: ' + points
-  timeOnScreen.style.display = 'block';
-  timeOnScreen.innerHTML = seconds;
-}
-
-function finishGameHtml (){
-  startButton.style.display = 'block';
-  timeOnScreen.style.display = 'none';
-  wordOnScreen.innerHTML = "Time's Up..."
-  pointsOnScreen.style.display = 'none';
-  scoreTable.style.display = 'flex';
-  startButton.classList.add('start__button--score');
-  timeOnScreen.innerHTML = seconds;
-}
-
-
-let tableCounter = 0 //Gambiarra
-let smallerPoints = []; //Pode entrar na function
+let smallerPoints = []; //Pode entrar na function ???
 let smallerPoint;
 let smallerPointIndex;
 
@@ -181,55 +171,55 @@ function verifyScore (){
 
   smallerPoints = [];
 
-  if (pointsTable.length == 3){
+  if (itens.length == 5){
 
-    for (var i = 0; i < pointsTable.length; i++){
+    for (var i = 0; i < itens.length; i++){
 
-      if (newPoint.myPoints > pointsTable[i].myPoints){
+      if (newPoint.myPoints > itens[i].myPoints){
         
-        smallerPoints.push(pointsTable[i].myPoints);
+        smallerPoints.push(itens[i].myPoints);
         smallerPoint = Math.min(...smallerPoints);
 
 
       }    
     }
 
-    smallerPointIndex = pointsTable.findIndex(checkNumber)
+    smallerPointIndex = itens.findIndex(checkNumber)
     function checkNumber (element, index, array){
       return element.myPoints == smallerPoint
     }
 
     //exclui no array
-    pointsTable.splice(smallerPointIndex, 1)
+    itens.splice(smallerPointIndex, 1)
     //exclui na tela
     clearScore();    
 
+
     //imprime no array
-    pointsTable.push(newPoint)
-    
-    
-    tableCounter = pointsTable.length -1
-    
+    itens.push(newPoint)
+
+
+    //imprime no localStorage
+    atualizaLocal();
+
+
     //imprime na tela
-    for (var i = 0; i < pointsTable.length; i++){
-      setScore(pointsTable[i])  
+    for (var i = 0; i < itens.length; i++){
+      setScore(itens[i])  
     }
-    console.log(pointsTable)
   }
   
   else {
-    pointsTable.push(newPoint)
-    tableCounter = pointsTable.length -1
-    setScore(pointsTable[tableCounter])  
+    itens.push(newPoint)
+    
+    atualizaLocal();
+    
+    setScore(itens[itens.length-1]) 
   }
-
-
 }
 
 
-
-
-
+/* STOPWATCH SETTINGS */
 function timer () {
   
   seconds--
@@ -237,14 +227,13 @@ function timer () {
   
   /*   OUT OF TIME */
   if (seconds <= -1){
-    
+
     clearInterval(timerInterval)
     seconds = 0;
     finishGameHtml();
     verifyScore(); 
 
   } 
-
 }
 
 
@@ -263,9 +252,7 @@ function startTimer (){
 }
 
 
-
-
-/* SETTING THE SCORE */
+/* SCORE SETTINGS */
 function setScore (newPoint){
   createPosition()
   createScore(newPoint.myPoints)
@@ -298,3 +285,26 @@ function clearScore(){
   listScore.innerHTML = 'SCORE';
   listDate.innerHTML = 'DATE';
 }
+
+
+itens.forEach((elemento) => {
+  setScore(elemento)
+});
+
+
+
+
+
+/* LOCAL STORAGE */
+
+/* 
+function removeLocal (id){
+  let newArray = itens.filter((item) => item.id != id);
+  localStorage.setItem("itens", JSON.stringify(newArray))
+}
+*/
+
+
+function atualizaLocal (){
+  localStorage.setItem("itens", JSON.stringify(itens));
+} 
