@@ -7,4 +7,5 @@
 [X] Fix Bug: Click start after the 1st Play;
 [X] Create and style the lost time when pressing the wrong letter;
 [ ] Create score list with date() and localStorage;
-[ ] Add sounds to the game;
+  [X] Write the newPoint on Top5 without writing it all over again;
+[ ] Add sounds to the game;disco

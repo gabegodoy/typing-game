@@ -202,16 +202,18 @@ function verifyScore (){
     //exclui no array
     pointsTable.splice(smallerPointIndex, 1)
     //exclui na tela
-    listPositionItems.splice(smallerPointIndex, 1)
-    listScoreItems.splice(smallerPointIndex, 1)
-    listDateItems.splice(smallerPointIndex, 1)
+    clearScore();    
 
     //imprime no array
     pointsTable.push(newPoint)
-    //imprime na tela
+    
+    
     tableCounter = pointsTable.length -1
-    setScore(pointsTable[tableCounter])  
-
+    
+    //imprime na tela
+    for (var i = 0; i < pointsTable.length; i++){
+      setScore(pointsTable[i])  
+    }
     console.log(pointsTable)
   }
   
@@ -265,14 +267,10 @@ function startTimer (){
 
 /* SETTING THE SCORE */
 function setScore (newPoint){
-
   createPosition()
   createScore(newPoint.myPoints)
   createDate(newPoint.date)
-  
 }
-
-
 
 function createPosition(){
   newPosition = document.createElement('li');
@@ -293,4 +291,10 @@ function createDate(date){
   listDate.appendChild(newDate);
   newDate.innerText = date;
   newDate.classList.add('dateItem')
+}
+
+function clearScore(){
+  listPosition.innerHTML = 'NO';
+  listScore.innerHTML = 'SCORE';
+  listDate.innerHTML = 'DATE';
 }
