@@ -23,6 +23,11 @@ const scoreTable = document.querySelector('.score__background');
 const listPosition = document.querySelector('.list__position');
 const listScore = document.querySelector('.list__score');
 const listDate = document.querySelector('.list__date');
+
+let listPositionItems = document.querySelectorAll('.positionItem');
+let listScoreItems = document.querySelectorAll('.scoreItem');
+let listDateItems = document.querySelectorAll('.dateItem');
+
 let newPosition = document.createElement('li');
 let newScore = document.createElement('li');
 let newDate = document.createElement('li');
@@ -158,7 +163,9 @@ function finishGameHtml (){
 
 
 let tableCounter = 0 //Gambiarra
-
+let smallerPoints = []; //Pode entrar na function
+let smallerPoint;
+let smallerPointIndex;
 
 function removeSmaller (){
 
@@ -169,37 +176,53 @@ function verifyScore (){
   newPoint = {
     date: date,
     hour: instantHour,
-    myPoints: points
+    myPoints: points,
   }
 
-  if (pointsTable.length == 5){
-    
+  smallerPoints = [];
+
+  if (pointsTable.length == 3){
+
     for (var i = 0; i < pointsTable.length; i++){
 
       if (newPoint.myPoints > pointsTable[i].myPoints){
-        //removeSmaller();          
-        console.log(Math.min(pointsTable[i].myPoints))
+        
+        smallerPoints.push(pointsTable[i].myPoints);
+        smallerPoint = Math.min(...smallerPoints);
 
-/* 
-        pointsTable.push(newPoint)
 
-        console.log(pointsTable)
-        setScore(pointsTable[tableCounter])  
- */
       }    
     }
+
+    smallerPointIndex = pointsTable.findIndex(checkNumber)
+    function checkNumber (element, index, array){
+      return element.myPoints == smallerPoint
+    }
+
+    //exclui no array
+    pointsTable.splice(smallerPointIndex, 1)
+    //exclui na tela
+    listPositionItems.splice(smallerPointIndex, 1)
+    listScoreItems.splice(smallerPointIndex, 1)
+    listDateItems.splice(smallerPointIndex, 1)
+
+    //imprime no array
+    pointsTable.push(newPoint)
+    //imprime na tela
+    tableCounter = pointsTable.length -1
+    setScore(pointsTable[tableCounter])  
+
+    console.log(pointsTable)
   }
   
-  else{
+  else {
     pointsTable.push(newPoint)
+    tableCounter = pointsTable.length -1
     setScore(pointsTable[tableCounter])  
   }
 
-  tableCounter = pointsTable.length
 
 }
-
-
 
 
 
@@ -255,16 +278,19 @@ function createPosition(){
   newPosition = document.createElement('li');
   listPosition.appendChild(newPosition);
   newPosition.innerText = " "
+  newPosition.classList.add('positionItem')
 }
 
 function createScore(points){
   newScore = document.createElement('li');
   listScore.appendChild(newScore);
   newScore.innerText = points;
+  newScore.classList.add('scoreItem')
 }
 
 function createDate(date){
   newDate = document.createElement('li');
   listDate.appendChild(newDate);
   newDate.innerText = date;
+  newDate.classList.add('dateItem')
 }
