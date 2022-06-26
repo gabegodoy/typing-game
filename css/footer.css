@@ -54,3 +54,9 @@
 .footer__media__list img:hover{
 margin-top: -1.5rem;
 }
+
+@media screen and (max-width: 1200px){
+  .footer__container{
+    display: none;
+  }
+}

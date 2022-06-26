@@ -75,15 +75,24 @@ body{
 /*   font-family: 'Press Start 2P', cursive; */
 }
 
+.mobile__view{
+  display: none;
+}
 
 @media screen and (max-width: 1200px){
-  main, .score__background, .footer__container{
+  body{
+    background-color: white;
+  }
+
+  main{
     display: none;
   }
   .mobile__view{
     display: block;
     text-align: center;
     margin-top: 50%;
+    color: red;
+    font-family: 'Press Start 2P', cursive;
 
   }
 }
