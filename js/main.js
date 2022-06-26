@@ -51,7 +51,6 @@ timeOnScreen.innerHTML = 'Are you fast?'
 function startGameHtml(){
   startButton.style.display = 'none';
   scoreTable.style.display = 'none'
-  startButton.classList.remove('start__button--score')
   pointsOnScreen.style.display = 'block'
   pointsOnScreen.innerHTML = 'Points: ' + points
   timeOnScreen.style.display = 'block';
@@ -64,7 +63,6 @@ function finishGameHtml (){
   wordOnScreen.innerHTML = "Time's Up..."
   pointsOnScreen.style.display = 'none';
   scoreTable.style.display = 'flex';
-  startButton.classList.add('start__button--score');
   timeOnScreen.innerHTML = seconds;
 }
 
@@ -203,7 +201,7 @@ function verifyScore (){
 
 
     //imprime no localStorage
-    atualizaLocal();
+    updateLocal();
 
 
     //imprime na tela
@@ -215,7 +213,7 @@ function verifyScore (){
   else {
     itens.push(newPoint)
     
-    atualizaLocal();
+    updateLocal();
     
     setScore(itens[itens.length-1]) 
   }
@@ -272,7 +270,7 @@ function setScore (newPoint){
 function createPosition(){
   newPosition = document.createElement('li');
   listPosition.appendChild(newPosition);
-  newPosition.innerText = " "
+  newPosition.innerText = ""
   newPosition.classList.add('positionItem')
 }
 
@@ -311,6 +309,6 @@ itens.forEach((elemento) => {
 setScore(elemento)
 });
 
-function atualizaLocal (){
+function updateLocal (){
   localStorage.setItem("itens", JSON.stringify(itens));
 } 
