@@ -76,6 +76,16 @@ body{
 }
 
 
+@media screen and (max-width: 1200px){
+  main, .score__background, .footer__container{
+    display: none;
+  }
+  .mobile__view{
+    display: block;
+    text-align: center;
+    margin-top: 50%;
 
+  }
+}
 
 
