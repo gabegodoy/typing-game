@@ -23,11 +23,18 @@ const scoreTable = document.querySelector('.score__background');
 const listPosition = document.querySelector('.list__position');
 const listScore = document.querySelector('.list__score');
 const listDate = document.querySelector('.list__date');
+const ticTacSound = document.querySelector('#tic-tac__sound');
+const alarmSound = document.querySelector('#alarm__sound');
+
+
+
+const itens = JSON.parse(localStorage.getItem("itens")) || [];
+
+
+
 let newPosition = document.createElement('li');
 let newScore = document.createElement('li');
 let newDate = document.createElement('li');
-
-
 
 let selectedWord = [];  
 let letterCounter = 0;
@@ -36,9 +43,31 @@ let points = 0;
 let timerInterval;
 
 
+/* -------------------------------------------------------- */
 timeOnScreen.innerHTML = 'Are you fast?'
 
-/* DRAW */
+
+/* HTML MECHANISM */
+function startGameHtml(){
+  startButton.style.display = 'none';
+  scoreTable.style.display = 'none'
+  pointsOnScreen.style.display = 'block'
+  pointsOnScreen.innerHTML = 'Points: ' + points
+  timeOnScreen.style.display = 'block';
+  timeOnScreen.innerHTML = seconds;
+}
+
+function finishGameHtml (){
+  startButton.style.display = 'block';
+  timeOnScreen.style.display = 'none';
+  wordOnScreen.innerHTML = "Time's Up..."
+  pointsOnScreen.style.display = 'none';
+  scoreTable.style.display = 'flex';
+  timeOnScreen.innerHTML = seconds;
+}
+
+
+/* DRAW NUMBER */
 function getRandomArbitrary(min, max) {
   return parseInt(Math.random() * (max - min) + min);
 }
@@ -62,9 +91,7 @@ function stringToArray (){
     wordOnScreen.appendChild(newLetter);
     
     selectedWord.push(wordSelector[i].toLowerCase())
-    
   }
-  
 }
 
 
@@ -94,11 +121,9 @@ window.addEventListener('keydown', (element) => {
   
   const input = element.key.toLowerCase()
   const selectecLetter = selectedWord[letterCounter]
-  
-  
+    
   if (timeOnScreen.textContent > 0){
-    
-    
+      
     if (input == selectecLetter){
       wordOnScreen.childNodes[letterCounter].style.color = '#136115';
       letterCounter++
@@ -111,7 +136,6 @@ window.addEventListener('keydown', (element) => {
         points++
         pointsOnScreen.innerHTML = 'Points: ' + points
       }
-      
     } 
     
     else if (letterCounter == selectedWord.length  && selectedWord.length != 0 ){
@@ -122,43 +146,17 @@ window.addEventListener('keydown', (element) => {
     
     else if (selectedWord.length != 0) {
       seconds-=5;
-      toggleWarning()
+      toggleWarning();
     }
   }
 })
 
 
-
-
-
-
 /* PUNCTUATION SYSTEM  */
-let pointsTable = []
 let newPoint;
-
-function startGameHtml(){
-  startButton.style.display = 'none';
-  scoreTable.style.display = 'none'
-  startButton.classList.remove('start__button--score')
-  pointsOnScreen.style.display = 'block'
-  pointsOnScreen.innerHTML = 'Points: ' + points
-  timeOnScreen.style.display = 'block';
-  timeOnScreen.innerHTML = seconds;
-}
-
-function finishGameHtml (){
-  startButton.style.display = 'block';
-  timeOnScreen.style.display = 'none';
-  wordOnScreen.innerHTML = "Time's Up..."
-  pointsOnScreen.style.display = 'none';
-  scoreTable.style.display = 'flex';
-  startButton.classList.add('start__button--score');
-  timeOnScreen.innerHTML = seconds;
-}
-
-
-let tableCounter = 0 //Gambiarra
-
+let smallerPoints = []; //Pode entrar na function ???
+let smallerPoint;
+let smallerPointIndex;
 
 function removeSmaller (){
 
@@ -169,42 +167,60 @@ function verifyScore (){
   newPoint = {
     date: date,
     hour: instantHour,
-    myPoints: points
+    myPoints: points,
   }
 
-  if (pointsTable.length == 5){
-    
-    for (var i = 0; i < pointsTable.length; i++){
+  smallerPoints = [];
 
-      if (newPoint.myPoints > pointsTable[i].myPoints){
-        //removeSmaller();          
-        console.log(Math.min(pointsTable[i].myPoints))
+  if (itens.length == 5){
 
-/* 
-        pointsTable.push(newPoint)
+    for (var i = 0; i < itens.length; i++){
 
-        console.log(pointsTable)
-        setScore(pointsTable[tableCounter])  
- */
+      if (newPoint.myPoints > itens[i].myPoints){
+        
+        smallerPoints.push(itens[i].myPoints);
+        smallerPoint = Math.min(...smallerPoints);
+
+
       }    
+    }
+
+    smallerPointIndex = itens.findIndex(checkNumber)
+    function checkNumber (element, index, array){
+      return element.myPoints == smallerPoint
+    }
+
+    //exclui no array
+    itens.splice(smallerPointIndex, 1)
+    //exclui na tela
+    clearScore();    
+
+
+    //imprime no array
+    itens.push(newPoint)
+
+
+    //imprime no localStorage
+    updateLocal();
+
+
+    //imprime na tela
+    for (var i = 0; i < itens.length; i++){
+      setScore(itens[i])  
     }
   }
   
-  else{
-    pointsTable.push(newPoint)
-    setScore(pointsTable[tableCounter])  
+  else {
+    itens.push(newPoint)
+    
+    updateLocal();
+    
+    setScore(itens[itens.length-1]) 
   }
-
-  tableCounter = pointsTable.length
-
 }
 
 
-
-
-
-
-
+/* STOPWATCH SETTINGS */
 function timer () {
   
   seconds--
@@ -212,14 +228,19 @@ function timer () {
   
   /*   OUT OF TIME */
   if (seconds <= -1){
-    
+
     clearInterval(timerInterval)
     seconds = 0;
+    
+    ticTacSound.pause();
+
+    
+    playSound(alarmSound);
+    
     finishGameHtml();
     verifyScore(); 
 
   } 
-
 }
 
 
@@ -232,39 +253,62 @@ function startTimer (){
   startGameHtml();
   
   timerInterval = setInterval(timer,1000) 
-  
+  playSound(ticTacSound);
+
   wordSelector = generateWord ()
   stringToArray()
 }
 
 
-
-
-/* SETTING THE SCORE */
+/* SCORE SETTINGS */
 function setScore (newPoint){
-
   createPosition()
   createScore(newPoint.myPoints)
   createDate(newPoint.date)
-  
 }
-
-
 
 function createPosition(){
   newPosition = document.createElement('li');
   listPosition.appendChild(newPosition);
-  newPosition.innerText = " "
+  newPosition.innerText = ""
+  newPosition.classList.add('positionItem')
 }
 
 function createScore(points){
   newScore = document.createElement('li');
   listScore.appendChild(newScore);
   newScore.innerText = points;
+  newScore.classList.add('scoreItem')
 }
 
 function createDate(date){
   newDate = document.createElement('li');
   listDate.appendChild(newDate);
   newDate.innerText = date;
+  newDate.classList.add('dateItem')
 }
+
+function clearScore(){
+  listPosition.innerHTML = 'NO';
+  listScore.innerHTML = 'SCORE';
+  listDate.innerHTML = 'DATE';
+}
+
+
+/* AUDIO SETTINGS */
+function playSound(sound){
+  sound.play()
+}
+
+
+
+
+
+/* LOCAL STORAGE */
+itens.forEach((elemento) => {
+setScore(elemento)
+});
+
+function updateLocal (){
+  localStorage.setItem("itens", JSON.stringify(itens));
+} 

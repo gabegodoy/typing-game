@@ -1,10 +1,11 @@
-[X] Create word draw generator;
-[X] Create keyPressed checker;
-[X] Create Timer;
-[X] Create HTML elements using DOM;
-[X] Fix Bug: Game starting when any key is pressed;
-[X] Fix Bug: Typing allowed after time is over;
-[X] Fix Bug: Click start after the 1st Play;
-[X] Create and style the lost time when pressing the wrong letter;
-[ ] Create score list with date() and localStorage;
-[ ] Add sounds to the game;
+## HOW TO PLAY
+1. Open the APP;
+2. Click on Start Button;
+3. Type the words as you see them;
+4. Write as many words as you can in 60 seconds;
+
+#### RULES
+1. If you mistake a letter, 5 seconds will be discounted of your time;
+2. If you mistake a letter **DO NOT** use backspace, or rule 1 will be applied;
+3. After writing the word, pushing enter is not necessary;
+4. Last but not least... **Have Fun =D**

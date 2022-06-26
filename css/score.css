@@ -14,21 +14,27 @@
 }
 
 .score__container{
-  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 
   width: 60vw;
   height: 80vh;
   background: #3c1361;
+  border-radius: 10px;
 
+  font-family: 'Press Start 2P', cursive;
 }
 
 .score__title{
-  margin-top: 8%;
-  margin-bottom: 6%;
-
-  color: red;
-  font-size: 3rem;
+  color: white;
+  font-size: 6rem;
   text-transform: uppercase;
+
+  -webkit-text-fill-color: red;
+  -webkit-text-stroke: 1px;
+
+  text-shadow: rgba(255,255,255,0.5) 0px 0px 10px;
 }
 
 .score__info{
@@ -42,6 +48,7 @@
 .list__position li{
   color: #136115;
   margin-top: 2rem;
+  margin-left: 8rem;
   list-style-type: decimal;
 }
 
@@ -56,6 +63,22 @@
 }
 
 .try-again__button{
-  position: absolute;
-  bottom: 5%;
+  justify-self: end;
+  max-width: 30rem;
+  margin: 0 auto;
+
+  background-color: yellow;
+  border-radius: 5px;
+  padding: .5rem 3rem;
+
+
+  color: black;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  -webkit-text-fill-color: white;
+  -webkit-text-stroke: 1px;
+
+
+  position: relative;
+  text-align: center;
 }

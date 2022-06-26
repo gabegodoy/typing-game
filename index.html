@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/score.css">
   <link rel="stylesheet" href="css/footer.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -54,8 +55,14 @@
         <ul class="list__score">SCORE</ul>
         <ul class="list__date">DATE</ul>
       </div>
+      <button class="try-again__button" onclick="startTimer()">Try Again</button>
     </div>
   </section>
+
+  <div class="sounds">
+    <audio src="assets/audio/tic-tac__sound.mp3" id="tic-tac__sound"></audio>
+    <audio src="assets/audio/alarm__sound.wav" id="alarm__sound"></audio>
+  </div>
   
   <script src="js/main.js"></script>
 </body>
