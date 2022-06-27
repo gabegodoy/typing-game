@@ -30,11 +30,10 @@ const alarmSound = document.querySelector('#alarm__sound');
 
 const itens = JSON.parse(localStorage.getItem("itens")) || [];
 
-function ordenarPorPontos(a, b){
+function ordenateScore(a, b){
   return b.myPoints -a.myPoints;
 }
 
-itens.sort(ordenarPorPontos);
 
 let newPosition = document.createElement('li');
 let newScore = document.createElement('li');
@@ -203,10 +202,10 @@ function verifyScore (){
     //imprime no array
     itens.push(newPoint)
 
-
+    
     //imprime no localStorage
     updateLocal();
-
+  
 
     //imprime na tela
     for (var i = 0; i < itens.length; i++){
@@ -219,7 +218,15 @@ function verifyScore (){
     
     updateLocal();
     
+    
+    
     setScore(itens[itens.length-1]) 
+  }
+  itens.sort(ordenateScore);
+  updateLocal();
+  clearScore()
+  for (var i = 0; i < itens.length; i++){
+    setScore(itens[i])
   }
 }
 
