@@ -30,7 +30,11 @@ const alarmSound = document.querySelector('#alarm__sound');
 
 const itens = JSON.parse(localStorage.getItem("itens")) || [];
 
+function ordenarPorPontos(a, b){
+  return b.myPoints -a.myPoints;
+}
 
+itens.sort(ordenarPorPontos);
 
 let newPosition = document.createElement('li');
 let newScore = document.createElement('li');
