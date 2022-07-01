@@ -90,11 +90,17 @@ body{
   .mobile__view{
     display: block;
     text-align: center;
-    margin-top: 50%;
+    width: 80vw;
+    margin: 0 auto;
+    margin-top: 10rem;
     color: red;
     font-family: 'Press Start 2P', cursive;
-
   }
+
+  .mobile__view p{
+    margin-top: 2rem;
+  }
+
 }
 
 
